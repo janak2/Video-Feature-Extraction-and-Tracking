@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project( features )
+find_package( OpenCV REQUIRED )
+add_executable( features features.cpp features.h main.cpp)
+target_link_libraries( features ${OpenCV_LIBS} )
