@@ -23,8 +23,7 @@ using namespace cv;
   cv::Mat descriptors1, descriptors2; // descriptors for keypoints found
   std::vector<cv::KeyPoint> keypoints1, keypoints2; // keypoints found in the images
   std::vector<cv::DMatch> matches;
-  std::vector<cv::DMatch > goodMatches;
-
+  
   void set_detector(string a);
 
   void set_description(string a);

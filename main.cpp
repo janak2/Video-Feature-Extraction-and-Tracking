@@ -15,7 +15,7 @@ int main( int argc, char** argv )
    
     cap >> img2;
   
- 
+  
   features_ feature;
   feature.set_detector("ORB");
   feature.set_description("ORB");
@@ -23,7 +23,7 @@ int main( int argc, char** argv )
   feature.set_source_image(img1);
   feature.set_scene_image(img2);
   
-  if(!temp){
+/*  if(!temp){
     d.updateDynamicStore(feature.keypoints1);
     temp++;
   }
@@ -32,14 +32,17 @@ int main( int argc, char** argv )
   for(int i=0;i<d.dynamicBucket.size();i++){
     newKey.push_back(d.dynamicBucket[i].keyPoint);
   }
-
-  feature.findDescriptor(newKey);
-  feature.image_features_(newKey);
+*/
+  feature.findDescriptor(feature.keypoints1);
+  feature.image_features_(feature.keypoints1);
 
   if(waitKey(20)==27)
   	{
   		break;
   	}
+
+    d.updateDynamicStore(feature.keypoints2);
+
 }
   return(0);
 }

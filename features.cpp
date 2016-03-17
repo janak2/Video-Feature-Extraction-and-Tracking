@@ -186,7 +186,8 @@ int features_::image_features_(std::vector<cv::KeyPoint> newKey)
   y1=min(scene_corners[0].y,min(scene_corners[1].y,min(scene_corners[2].y,scene_corners[3].y)));
   y2=max(scene_corners[0].y,max(scene_corners[1].y,max(scene_corners[2].y,scene_corners[3].y)));
 
-
+  if(y2>y1&&x2>x1&&x1>0&&y1>0)
+  {
 
   //-- Draw lines between the corners (the mapped object in the scene - image_2 )
   line( imgMatches, Point2f(x1,y1) + Point2f( img1.cols, 0), Point2f(x2,y1) + Point2f( img1.cols, 0), Scalar(0, 255, 0), 4 );
@@ -196,6 +197,15 @@ int features_::image_features_(std::vector<cv::KeyPoint> newKey)
 
   //-- Show detected matches
   imshow( "Good Matches & Object detection", imgMatches );
+
+  Rect my_roi;
+  cout<<x1<<' '<<x2<<' '<<y1<<' '<<y2<<' '<<img1.cols<<' '<<img2.cols<<endl;
+  my_roi.x = (x1+img1.cols);
+  my_roi.y = (y2);
+  my_roi.width = (my_roi.x + x2 - x1);
+  my_roi.height = (my_roi.y + y2 - y1);
+  img1 = img2( my_roi);
+  }
   }
 
    return 0;
