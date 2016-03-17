@@ -9,16 +9,19 @@ int main( int argc, char** argv )
     Mat img1 = imread( argv[1], 1 );
     Mat img2;
     VideoCapture cap(argv[2]);
+    
+    features_ feature;
+    feature.set_detector("ORB");
+    feature.set_description("ORB");
+    feature.set_matcher("BruteForce-Hamming");
+    feature.set_source_image(img1);
+
+
     while(true)
     {
      
         cap >> img2;
         
-        features_ feature;
-        feature.set_detector("ORB");
-        feature.set_description("ORB");
-        feature.set_matcher("BruteForce-L1");
-        feature.set_source_image(img1);
         feature.set_scene_image(img2);
         
       /*  if(!temp){

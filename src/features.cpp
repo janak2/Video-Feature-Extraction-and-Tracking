@@ -1,25 +1,24 @@
  #include "features.h"
 
-
 //constructors
-    features_::features_(cv::Mat inimg1, cv :: Mat inimg2)
-    {
-        img1 = inimg1;
-        img2 = inimg2;
-    }
+features_::features_(cv::Mat inimg1, cv :: Mat inimg2)
+{
+    img1 = inimg1;
+    img2 = inimg2;
+}
 
-    features_::features_(){ }
+features_::features_(){ }
 
-    void features_::set_detector(string a)
+void features_::set_detector(string a)
+{
+    if(a.empty())
     {
-        if(a.empty())
-        {
-            cout<"no detector is been set";
-            return;
-        }
-        option.detectorType = a;
-        return ;
+        cout<"no detector is been set";
+        return;
     }
+    option.detectorType = a;
+    return ;
+}
       
 
 void features_::set_description(string a)
@@ -183,33 +182,39 @@ int features_::image_features_(std::vector<cv::KeyPoint> newKey)
   std::vector<Point2f> scene_corners(4);
 
   perspectiveTransform( obj_corners, scene_corners, H);
-  float  x1,x2,y1,y2;
-  x1=min(scene_corners[0].x,min(scene_corners[1].x,min(scene_corners[2].x,scene_corners[3].x)));
-  x2=max(scene_corners[0].x,max(scene_corners[1].x,max(scene_corners[2].x,scene_corners[3].x)));
 
-  y1=min(scene_corners[0].y,min(scene_corners[1].y,min(scene_corners[2].y,scene_corners[3].y)));
-  y2=max(scene_corners[0].y,max(scene_corners[1].y,max(scene_corners[2].y,scene_corners[3].y)));
+    float  x1,x2,y1,y2;
+    x1=min(scene_corners[0].x,min(scene_corners[1].x,min(scene_corners[2].x,scene_corners[3].x)));
+    x2=max(scene_corners[0].x,max(scene_corners[1].x,max(scene_corners[2].x,scene_corners[3].x)));
 
-  if(y2>y1&&x2>x1&&x1>0&&y1>0)
-  {
+    y1=min(scene_corners[0].y,min(scene_corners[1].y,min(scene_corners[2].y,scene_corners[3].y)));
+    y2=max(scene_corners[0].y,max(scene_corners[1].y,max(scene_corners[2].y,scene_corners[3].y)));
 
-  //-- Draw lines between the corners (the mapped object in the scene - image_2 )
-  line( imgMatches, Point2f(x1,y1) + Point2f( img1.cols, 0), Point2f(x2,y1) + Point2f( img1.cols, 0), Scalar(0, 255, 0), 4 );
-  line( imgMatches, Point2f(x2,y1) + Point2f( img1.cols, 0), Point2f(x2,y2) + Point2f( img1.cols, 0), Scalar( 0, 255, 0), 4 );
-  line( imgMatches, Point2f(x2,y2) + Point2f( img1.cols, 0), Point2f(x1,y2) + Point2f( img1.cols, 0), Scalar( 0, 255, 0), 4 );
-  line( imgMatches, Point2f(x1,y2) + Point2f( img1.cols, 0), Point2f(x1,y1) + Point2f( img1.cols, 0), Scalar( 0, 255, 0), 4 );
+    if(y2>y1&&x2>x1&&x1>0&&y1>0)
+    {
 
-  //-- Show detected matches
-  imshow( "Good Matches & Object detection", imgMatches );
+        //-- Draw lines between the corners (the mapped object in the scene - image_2 )
+        line( imgMatches, Point2f(x1,y1) + Point2f( img1.cols, 0), Point2f(x2,y1) + Point2f( img1.cols, 0), Scalar(0, 255, 0), 4 );
+        line( imgMatches, Point2f(x2,y1) + Point2f( img1.cols, 0), Point2f(x2,y2) + Point2f( img1.cols, 0), Scalar( 0, 255, 0), 4 );
+        line( imgMatches, Point2f(x2,y2) + Point2f( img1.cols, 0), Point2f(x1,y2) + Point2f( img1.cols, 0), Scalar( 0, 255, 0), 4 );
+        line( imgMatches, Point2f(x1,y2) + Point2f( img1.cols, 0), Point2f(x1,y1) + Point2f( img1.cols, 0), Scalar( 0, 255, 0), 4 );
 
-  Rect my_roi;
-  cout<<x1<<' '<<x2<<' '<<y1<<' '<<y2<<' '<<img1.cols<<' '<<img2.cols<<endl;
-  my_roi.x = (x1+img1.cols);
-  my_roi.y = (y2);
-  my_roi.width = (my_roi.x + x2 - x1);
-  my_roi.height = (my_roi.y + y2 - y1);
-  img1 = img2( my_roi);
-  }
+        //-- Show detected matches
+        imshow( "Good Matches & Object detection", imgMatches );
+
+        Rect my_roi;
+       // cout<<x1<<' '<<x2<<' '<<y1<<' '<<y2<<' '<<img1.rows<<' '<<img2.cols<<endl;
+
+        my_roi.x = (x1);
+        my_roi.y = (y1);
+        my_roi.width = ( x2 - x1);
+        my_roi.height = ( y2 - y1);
+
+        cout<<my_roi.x<<' '<<my_roi.y<<' '<<my_roi.width<<' '<<my_roi.height<<endl;
+        
+        if(my_roi.area() > 500 )
+            img1 = img2(my_roi);
+    }
   }
 
    return 0;
