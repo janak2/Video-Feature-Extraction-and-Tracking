@@ -2,37 +2,37 @@
 
 
 //constructors
-  features_::features_(cv::Mat inimg1, cv :: Mat inimg2)
-  {
-    img1 = inimg1;
-    img2 = inimg2;
-  }
-  features_::features_()
-  {
+    features_::features_(cv::Mat inimg1, cv :: Mat inimg2)
+    {
+        img1 = inimg1;
+        img2 = inimg2;
+    }
 
-  }
+    features_::features_(){ }
 
-  void features_::set_detector(string a)
-  {
+    void features_::set_detector(string a)
+    {
+        if(a.empty())
+        {
+            cout<"no detector is been set";
+            return;
+        }
+        option.detectorType = a;
+        return ;
+    }
+      
+
+void features_::set_description(string a)
+{
     if(a.empty())
     {
       cout<"no detector is been set";
       return;
     }
-    option.detectorType = a;
-    return ;
-    }
-      
-void features_::set_description(string a)
-{
-  if(a.empty())
-    {
-      cout<"no detector is been set";
-      return;
-    }
-  option.descriptorType = a;
-return;
+    option.descriptorType = a;
+    return;
 }
+
 
 void features_::set_matcher(string a)
 {
@@ -44,55 +44,58 @@ void features_::set_matcher(string a)
   option.matcherType = a;
   }
 
-int features_::findKeypoints() {
-cv::Ptr<FeatureDetector> detector = FeatureDetector::create(option.detectorType);
-cout<<"deetcted\n";
-if ( detector.empty() )
+int features_::findKeypoints()
 {
-cout << "Can not create detector or descriptor extractor or descriptor matcher of given types 4s" << endl;
-return -1;
-}
-detector->detect(img1, keypoints1);
-cout<<"deetcted\n";
-detector->detect(img2, keypoints2);
-return 0;
+    cv::Ptr<FeatureDetector> detector = FeatureDetector::create(option.detectorType);
+    cout<<"deetcted\n";
+    if ( detector.empty() )
+    {
+      cout << "Can not create detector or descriptor extractor or descriptor matcher of given types 4s" << endl;
+        return -1;
+    }
+    detector->detect(img1, keypoints1);
+    cout<<"deetcted\n";
+    detector->detect(img2, keypoints2);
+    return 0;
 }
 
-int features_::findDescriptor(std::vector<cv::KeyPoint> newKey) {
-//Ptr<DescriptorExtractor> descri
-cv::Ptr<DescriptorExtractor> descriptor = DescriptorExtractor::create(option.descriptorType);
-if ( descriptor.empty() ) {
-cout << "Can not create detector or descriptor extractor or descriptor matcher of given types" << endl;
-return -1;
-}
-descriptor->compute(img1, newKey, descriptors1);
-descriptor->compute(img2, keypoints2, descriptors2);
-return 0;
+int features_::findDescriptor(std::vector<cv::KeyPoint> newKey) 
+{
+    //Ptr<DescriptorExtractor> descri
+    cv::Ptr<DescriptorExtractor> descriptor = DescriptorExtractor::create(option.descriptorType);
+    if ( descriptor.empty() ) 
+    {
+        cout << "Can not create detector or descriptor extractor or descriptor matcher of given types" << endl;
+        return -1;
+    }
+    descriptor->compute(img1, newKey, descriptors1);
+    descriptor->compute(img2, keypoints2, descriptors2);
+    return 0;
 }
 
 int features_::set_source_image(cv::Mat inimg)
 {
-  if( inimg.empty())
-  {
-    cout<<"no input image";
-    return -1;
-  }
-  cout<<"setting";
-img1 = inimg.clone(); 
-return 0;
+    if( inimg.empty())
+    {
+       cout<<"no input image";
+     return -1;
+    }
+    cout<<"setting";
+    img1 = inimg.clone(); 
+    return 0;
 }
 
 int features_::set_scene_image(cv::Mat inimg)
 {
-  if( inimg.empty())
-  {
-    cout<<"no input image";
-    return -1;
-  }
-  cout<<"setting";
-img2 = inimg.clone(); 
-findKeypoints();
-return 0;
+    if( inimg.empty())
+    {
+        cout<<"no input image";
+        return -1;
+    }
+    cout<<"setting";
+    img2 = inimg.clone(); 
+    findKeypoints();
+    return 0;
 }
 
 
@@ -120,7 +123,8 @@ int features_::image_features_(std::vector<cv::KeyPoint> newKey)
   cv::Ptr<DescriptorExtractor> descriptor = DescriptorExtractor::create(option.descriptorType);
   descriptor->compute(img2, keypoints2, descriptors2);
   cout<<"keypoints 2"<<keypoints2.size()<<endl;
-*/ Ptr<DescriptorMatcher> descriptorMatcher = DescriptorMatcher::create(option.matcherType);
+*/ 
+  Ptr<DescriptorMatcher> descriptorMatcher = DescriptorMatcher::create(option.matcherType);
   
   //find all matches
   vector<DMatch>  matches;
