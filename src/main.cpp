@@ -9,11 +9,12 @@ int main( int argc, char** argv )
     Mat img1 = imread( argv[1], 1 );
     Mat img2;
     VideoCapture cap(argv[2]);
-    
+    char c[100];
+//    cin>>c;    
     features_ feature;
     feature.set_detector("ORB");
     feature.set_description("ORB");
-    feature.set_matcher("BruteForce-Hamming");
+    feature.set_matcher("ORB");
     feature.set_source_image(img1);
 
 
@@ -34,11 +35,12 @@ int main( int argc, char** argv )
           newKey.push_back(d.dynamicBucket[i].keyPoint);
         }
       */
+        feature.findKeypoints();            
         feature.findDescriptor(feature.keypoints1);
         feature.image_features_(feature.keypoints1);
 
         if(waitKey(20)==27)
-    	{
+    	{  
     		break;
     	}
 

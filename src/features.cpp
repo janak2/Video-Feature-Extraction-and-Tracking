@@ -142,7 +142,7 @@ int features_::image_features_(std::vector<cv::KeyPoint> newKey)
   }
 
   printf("-- Max dist : %f \n", max_dist );
-  printf("-- Min dist : %f \n", min_dist );
+   printf("-- Min dist : %f \n", min_dist );
 
   for( int i = 0; i < descriptors1.rows; i++ )
   { 
@@ -164,11 +164,11 @@ int features_::image_features_(std::vector<cv::KeyPoint> newKey)
   std::vector<Point2f> scene ;
 
   for( int i = 0; i < goodMatches.size(); i++ )
-    {
-      //-- Get the keypoints from the good matches
-      obj.push_back( newKey[ goodMatches[i].queryIdx ].pt );
-      scene.push_back( keypoints2[ goodMatches[i].trainIdx ].pt );
-    }
+  {
+    //-- Get the keypoints from the good matches
+    obj.push_back( newKey[ goodMatches[i].queryIdx ].pt );
+    scene.push_back( keypoints2[ goodMatches[i].trainIdx ].pt );
+  }
 
   if(obj.size() > 3)
   {
@@ -212,8 +212,12 @@ int features_::image_features_(std::vector<cv::KeyPoint> newKey)
 
         cout<<my_roi.x<<' '<<my_roi.y<<' '<<my_roi.width<<' '<<my_roi.height<<endl;
         
-        if(my_roi.area() > 500 )
-            img1 = img2(my_roi);
+        if(my_roi.area() > 2000 )
+        {
+          cv::Mat img_temp;
+          img_temp = img2(my_roi);
+          img1 = img_temp.clone();
+        }
     }
   }
 

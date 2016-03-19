@@ -3,7 +3,8 @@
 using namespace std;
 using namespace cv;
 
-void dynamicStore::updateDynamicStore(std::vector<cv::KeyPoint> newKeyPoints){
+void dynamicStore::updateDynamicStore(std::vector <cv::KeyPoint> newKeyPoints)
+{
 	
 	int n=dynamicBucket.size();
 	int n1=newKeyPoints.size();
