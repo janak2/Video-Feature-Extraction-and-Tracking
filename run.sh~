@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd build/
-cmake ../src/
+cmake ../src/CMakeLists.txt
 make
 cd ../src
 ../build/features ../resources/ss3.png ../resources/5.avi
